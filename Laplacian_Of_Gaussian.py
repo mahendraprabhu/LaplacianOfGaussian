@@ -26,7 +26,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-filename = 'Eutypa - 1.jpg'
+filename = 'Eutypa - 1_1.png'
 img = cv2.imread(filename,0)
 
 plt.close('all')
@@ -34,25 +34,16 @@ plt.close('all')
 #LogKernel = get_log_kernel(5,2)
 a, b = [],[]
 
-ValueRange = np.arange(0,10,0.1)
-for i in ValueRange:
+ValueRange = np.arange(0,5,0.1)
+count = 1
+for i in ValueRange[1:]:
     m = cv2.filter2D(img,ddepth=-1, kernel = get_log_kernel(7,i))
     a.append(i)
     b.append(m.max())
+    plt.subplot(5,len(ValueRange)/4,count)
+    plt.imshow(m)
+    count += 1
 
+plt.figure()
 plt.plot(a,b)
-#plt.subplot(1,2,1), plt.imshow(img)i,
-#plt.subplot(1,2,2), plt.imshow(m)
 
-
-#for i in np.arange(0,10,0.2):
-#    im1 = cv2.GaussianBlur(img,(15,15),i)
-#    laplacian = cv2.Laplacian(im1,cv2.CV_64F, ksize=5)
-#    a.append(i)
-#    b.append(np.sort(laplacian.ravel())[-5:].mean())
-#
-#
-#b = np.array(b)
-#print a[np.nonzero(b==b.max())[0]]
-#plt.subplot(121),plt.plot(a,b,'ro')
-#plt.subplot(122),plt.imshow(im1)
