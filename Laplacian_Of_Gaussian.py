@@ -9,9 +9,7 @@ Comments:   Trying out LoG function on a Image
 """
 
 def get_log_kernel(siz, std):
-    import numpy as np
-    import sys
-
+    # This creates a LoG filter
     x = y = np.linspace(-siz, siz, 2*siz+1)
     x, y = np.meshgrid(x, y)
     arg = -(x**2 + y**2) / (2*std**2)
@@ -24,6 +22,7 @@ def get_log_kernel(siz, std):
 
 import cv2
 import numpy as np
+import sys
 import matplotlib.pyplot as plt
 
 filename = 'Eutypa - 1_1.png'
@@ -31,19 +30,25 @@ img = cv2.imread(filename,0)
 
 plt.close('all')
 
-#LogKernel = get_log_kernel(5,2)
-a, b = [],[]
-
-ValueRange = np.arange(0,5,0.1)
+a, b = [],[]        # List to record the LoG values
+ValueRange = np.linspace(0,10,51)
+ValueRange = ValueRange[1:]
 count = 1
-for i in ValueRange[1:]:
-    m = cv2.filter2D(img,ddepth=-1, kernel = get_log_kernel(7,i))
+NumOfRows = 5       # These are to create subplots to view the images
+NumOfColumns = len(ValueRange)/NumOfRows
+if NumOfColumns * NumOfRows < len(ValueRange):
+    NumOfRows += 1
+
+for i in ValueRange:
+    m = cv2.filter2D(img,ddepth=cv2.CV_32F, kernel = get_log_kernel(20,i))
     a.append(i)
     b.append(m.max())
-    plt.subplot(5,len(ValueRange)/4,count)
+    plt.subplot(NumOfRows,NumOfColumns,count)
     plt.imshow(m)
+    plt.axis('off')
+    plt.title(i)
     count += 1
 
 plt.figure()
-plt.plot(a,b)
+plt.loglog(a,b)
 
