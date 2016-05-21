@@ -49,6 +49,9 @@ for i in ValueRange:
     plt.title(i)
     count += 1
 
+plt.savefig('test0.jpg')
+
 plt.figure()
 plt.loglog(a,b)
-
+plt.savefig('test1.jpg')
+plt.show()
